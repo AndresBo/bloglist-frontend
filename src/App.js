@@ -3,6 +3,7 @@ import LoginForm from './components/LoginForm'
 import Blog from './components/Blog'
 import blogService from './services/blogs'
 import loginService from './services/login'
+import CreateForm from './components/CreateForm'
 
 const App = () => {
   const [blogs, setBlogs] = useState([])
@@ -10,6 +11,9 @@ const App = () => {
   const [password, setPassword] = useState('')
   const [user, setUser] = useState(null)
   const [message, setMessage] = useState(null)
+  const [title, setTitle] = useState('')
+  const [author, setAuthor] = useState('')
+  const [url, setUrl] = useState('')
 
 
   useEffect(() => {
@@ -35,6 +39,7 @@ const App = () => {
         username, password
       })
       window.localStorage.setItem('loggedBloglistUser', JSON.stringify(user))
+      blogService.setToken(user.token)
       setUser(user)
       setUsername('')
       setPassword('')
@@ -53,6 +58,23 @@ const App = () => {
     setUser(null)
   }
 
+  const addBlog = (event) => {
+    event.preventDefault()
+    const blogObject = {
+      title: title,
+      author: author,
+      url: url
+    }
+    blogService
+      .create(blogObject)
+      .then(returnedObject => {
+        setBlogs(blogs.concat(returnedObject))
+        setTitle('')
+        setAuthor('')
+        setUrl('')
+      })
+  }
+
   if (user === null) {
     return (
       <div>
@@ -69,6 +91,15 @@ const App = () => {
       <div>
         <h2>blogs</h2>
         <p>{user.name} is logged in</p>
+        <CreateForm
+          addBlog={addBlog}
+          title={title}
+          setTitle={setTitle}
+          author={author}
+          setAuthor={setAuthor}
+          url={url}
+          setUrl={setUrl}
+        />  
         <button type='submit' onClick={handleLogout}>logout</button>
         {blogs.map(blog =>
           <Blog key={blog.id} blog={blog} />

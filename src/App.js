@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react'
 import LoginForm from './components/LoginForm'
 import Blog from './components/Blog'
+import Notification from './components/Notifications'
 import blogService from './services/blogs'
 import loginService from './services/login'
 import CreateForm from './components/CreateForm'
@@ -43,8 +44,9 @@ const App = () => {
       setUser(user)
       setUsername('')
       setPassword('')
+
     } catch(exception) {
-      setMessage('Wrong credentials')
+      setMessage('wrong username or password')
       setTimeout(() => {
         setMessage(null)
       }, 5000)
@@ -65,6 +67,8 @@ const App = () => {
       author: author,
       url: url
     }
+
+    try {
     blogService
       .create(blogObject)
       .then(returnedObject => {
@@ -72,7 +76,17 @@ const App = () => {
         setTitle('')
         setAuthor('')
         setUrl('')
+        setMessage(`blog ${blogObject.title} has been added`)
+        setTimeout(() => {
+          setMessage(null)
+        }, 5000)
       })
+    } catch(exception) {
+      setMessage(`${exception}`)
+      setTimeout(() => {
+        setMessage(null)
+      }, 5000)
+    }
   }
 
   if (user === null) {
@@ -85,11 +99,13 @@ const App = () => {
           password={password}
           setPassword={setPassword}
         />
+        <Notification message={message} />
       </div>
   )} else {
     return (
       <div>
         <h2>blogs</h2>
+        <Notification message={message} />
         <p>{user.name} is logged in</p>
         <CreateForm
           addBlog={addBlog}

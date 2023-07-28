@@ -46,6 +46,13 @@ const App = () => {
     }
   }
 
+  const handleLogout = async (event) => {
+    event.preventDefault()
+
+    window.localStorage.clear()
+    setUser(null)
+  }
+
   if (user === null) {
     return (
       <div>
@@ -62,6 +69,7 @@ const App = () => {
       <div>
         <h2>blogs</h2>
         <p>{user.name} is logged in</p>
+        <button type='submit' onClick={handleLogout}>logout</button>
         {blogs.map(blog =>
           <Blog key={blog.id} blog={blog} />
         )}

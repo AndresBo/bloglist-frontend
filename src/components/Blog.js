@@ -18,8 +18,9 @@ const Blog = ({blog}) => {
   <div style={blogStyle}>
     <div>{blog.title}</div> 
     <div>{blog.author}</div> 
-    <div>{blog.url} </div> 
+    <a href={blog.url}>link</a>
     <div>likes {blog.likes} <button>like</button></div>
+    <div>{blog.user.name}</div>
     <button onClick={setVisibility}>hide</button>
   </div>  
   ) 

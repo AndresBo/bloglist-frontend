@@ -23,7 +23,7 @@ const App = () => {
       setBlogs( blogs )
     )  
   }, [])
-
+  
   useEffect(() => {
     const loggedUserJSON = window.localStorage.getItem('loggedBloglistUser')
     if (loggedUserJSON) {
@@ -89,6 +89,30 @@ const App = () => {
       }, 5000)
     }
   }
+  // !!!
+  const likeBlog = (blog) => {
+    // make deep copy of blog object with JSON.parse + JSON.stringify
+    const blogObject = JSON.parse(JSON.stringify(blog))
+    
+    // change the whole 'user' object for just the id of the user  
+    blogObject.user = blog.user.id
+    blogObject.likes+=1
+    
+    try {
+      blogService
+        .like(blogObject)
+        .then(response => {
+          console.log('RESPONSE', JSON.parse(response))
+          // GET all blogs ---this sucks, slow! Somehow the response lacks the populated user
+          blogService.getAll().then(blogs =>
+            setBlogs( blogs )
+          )  
+        })
+    } catch(exception) {
+      console.log(exception)
+    }
+  
+  }
 
   if (user === null) {
     return (
@@ -121,7 +145,7 @@ const App = () => {
         </Toggable> 
         <button type='submit' onClick={handleLogout}>logout</button>
         {blogs.map(blog =>
-          <Blog key={blog.id} blog={blog} />
+          <Blog key={blog.id} blog={blog} handleLike={likeBlog}/>
         )}
       </div>
     )

@@ -27,7 +27,7 @@ const create = async newObject => {
 }
 // !!!
 const like = async newObject => {
-  
+  console.log('HELLO FROM PUT')
   const config = {
     headers: { Authorization: token }
   }

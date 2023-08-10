@@ -89,7 +89,7 @@ const App = () => {
       }, 5000)
     }
   }
-  // !!!
+
   const likeBlog = (blog) => {
     // make deep copy of blog object with JSON.parse + JSON.stringify
     const blogObject = JSON.parse(JSON.stringify(blog))
@@ -100,18 +100,17 @@ const App = () => {
     
     try {
       blogService
-        .like(blogObject)
-        .then(response => {
-          console.log('RESPONSE', JSON.parse(response))
-          // GET all blogs ---this sucks, slow! Somehow the response lacks the populated user
-          blogService.getAll().then(blogs =>
-            setBlogs( blogs )
-          )  
+        .like(blogObject).then(updatedBlog => {
+          const updatedBlogs = blogs.map(blog => blog.id !== updatedBlog.id ? blog : updatedBlog)
+          setBlogs(updatedBlogs)
         })
+
     } catch(exception) {
-      console.log(exception)
+      setMessage(`${exception}`)
+      setTimeout(() => {
+        setMessage(null)
+      }, 5000)
     }
-  
   }
 
   if (user === null) {

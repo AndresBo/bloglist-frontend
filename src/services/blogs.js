@@ -25,15 +25,13 @@ const create = async newObject => {
   const response = await axios.post(baseUrl, newObject, config)
   return response.data
 }
-// !!!
+
 const like = async newObject => {
-  console.log('HELLO FROM PUT')
   const config = {
     headers: { Authorization: token }
   }
-
   const response = await axios.put(`${baseUrl}/${newObject.id}`, newObject, config)
-  return response.config.data
+  return response.data  
 }
 
 // eslint-disable-next-line import/no-anonymous-default-export

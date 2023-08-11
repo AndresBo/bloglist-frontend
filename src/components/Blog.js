@@ -10,27 +10,29 @@ const Blog = ({ blog, handleLike }) => {
     paddingLeft: 2,
     border: 'solid',
     borderWidth: 1,
-    marginBottom: 5
+    marginBottom: 5,
+    maxWidth: 500,
+    backgroundColor: '#55868c'
   }
 
   if(visible) {
-  return (
-  <div style={blogStyle}>
-    <div>{blog.title}</div> 
-    <div>{blog.author}</div> 
-    <a href={blog.url}>link</a>
-    <div>likes {blog.likes} <button onClick={() => handleLike(blog)}>like</button></div>
-    <div>{blog.user.name}</div>
-    <button onClick={setVisibility}>hide</button>
-  </div>  
-  ) 
+    return (
+      <div style={blogStyle}>
+        <div>{blog.title}</div>
+        <div>{blog.author}</div>
+        <a href={blog.url}>link</a>
+        <div>likes {blog.likes} <button onClick={() => handleLike(blog)}>like</button></div>
+        <div>{blog.user.name}</div>
+        <button onClick={setVisibility}>hide</button>
+      </div>
+    )
 } else {
-  return (
-  <div style={blogStyle}>
-    <div>{blog.title}</div>
-    <button onClick={setVisibility}>show</button>
-  </div>
-  )
+    return (
+      <div style={blogStyle}>
+        <div>{blog.title}</div>
+        <button onClick={setVisibility}>show</button>
+      </div>
+    )
 }
 }
 

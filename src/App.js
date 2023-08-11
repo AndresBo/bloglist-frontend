@@ -17,13 +17,18 @@ const App = () => {
   const [author, setAuthor] = useState('')
   const [url, setUrl] = useState('')
 
-
+  // GET ALL BLOGS AT START - SORTED BY NUMBER OF LIKES
   useEffect(() => {
-    blogService.getAll().then(blogs =>
-      setBlogs( blogs )
-    )  
+    blogService.getAll().then(blogs => {
+      console.log(blogs)
+      const sorted = blogs.sort((blogA, blogB)=> blogB.likes - blogA.likes)
+      setBlogs(sorted)
+    })  
   }, [])
+
+
   
+  // CHECK FOR LOGGED USER AT START
   useEffect(() => {
     const loggedUserJSON = window.localStorage.getItem('loggedBloglistUser')
     if (loggedUserJSON) {
@@ -32,7 +37,7 @@ const App = () => {
     }
   }, [])
 
-
+  // LOGIN
   const handleLogin = async (event) => {
     event.preventDefault()
 
@@ -54,6 +59,7 @@ const App = () => {
     }
   }
 
+  // LOG OUT
   const handleLogout = async (event) => {
     event.preventDefault()
 
@@ -61,8 +67,10 @@ const App = () => {
     setUser(null)
   }
 
+  // CREATE BLOG
   const addBlog = (event) => {
     event.preventDefault()
+
     const blogObject = {
       title: title,
       author: author,
@@ -90,6 +98,7 @@ const App = () => {
     }
   }
 
+  // LIKE BLOG
   const likeBlog = (blog) => {
     // make deep copy of blog object with JSON.parse + JSON.stringify
     const blogObject = JSON.parse(JSON.stringify(blog))
@@ -113,6 +122,7 @@ const App = () => {
     }
   }
 
+  // RENDER 
   if (user === null) {
     return (
       <div>

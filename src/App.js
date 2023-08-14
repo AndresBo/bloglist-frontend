@@ -20,7 +20,6 @@ const App = () => {
   // GET ALL BLOGS AT START - SORTED BY NUMBER OF LIKES
   useEffect(() => {
     blogService.getAll().then(blogs => {
-      console.log(blogs)
       const sorted = blogs.sort((blogA, blogB)=> blogB.likes - blogA.likes)
       setBlogs(sorted)
     })  
@@ -33,7 +32,9 @@ const App = () => {
     const loggedUserJSON = window.localStorage.getItem('loggedBloglistUser')
     if (loggedUserJSON) {
       const user = JSON.parse(loggedUserJSON)
+      // set state and token in services/blogs
       setUser(user)
+      blogService.setToken(user.token)
     }
   }, [])
 
@@ -109,11 +110,39 @@ const App = () => {
     
     try {
       blogService
-        .like(blogObject).then(updatedBlog => {
+        .like(blogObject)
+        .then(updatedBlog => {
           const updatedBlogs = blogs.map(blog => blog.id !== updatedBlog.id ? blog : updatedBlog)
           setBlogs(updatedBlogs)
         })
 
+    } catch(exception) {
+      setMessage(`${exception}`)
+      setTimeout(() => {
+        setMessage(null)
+      }, 5000)
+    }
+  }
+
+  // DELETE BLOG: only user who created blog can deleted. Nested if statements: first checks username
+  // of user attached to blog against logged user, and second if confirms delete operation.
+  const deleteBlog = (id, username) => {
+    try {
+      if (user.username === username){
+        if (window.confirm('Delete?')){
+          blogService
+            .deleteOne(id)
+            .then(response => {
+              const updatedBlogs = blogs.filter(blog => blog.id !== id)
+              setBlogs(updatedBlogs)
+            })
+        }
+      } else {
+        setMessage(`only user who created bloglist can delete it`)
+        setTimeout(() => {
+          setMessage(null)
+        }, 5000)
+      }
     } catch(exception) {
       setMessage(`${exception}`)
       setTimeout(() => {
@@ -154,7 +183,12 @@ const App = () => {
         </Toggable> 
         <button type='submit' onClick={handleLogout}>logout</button>
         {blogs.map(blog =>
-          <Blog key={blog.id} blog={blog} handleLike={likeBlog}/>
+          <Blog 
+            key={blog.id}
+            blog={blog}
+            handleLike={likeBlog}
+            handleDelete={deleteBlog}
+          />
         )}
       </div>
     )

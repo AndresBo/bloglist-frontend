@@ -125,7 +125,7 @@ const App = () => {
   }
 
   // DELETE BLOG: only user who created blog can deleted. Nested if statements: first checks username
-  // of user attached to blog against logged user, and second if confirms delete operation.
+  // of user attached to blog against logged user, and second if block confirms delete operation.
   const deleteBlog = (id, username) => {
     try {
       if (user.username === username){

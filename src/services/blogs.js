@@ -31,7 +31,7 @@ const like = async newObject => {
     headers: { Authorization: token }
   }
   const response = await axios.put(`${baseUrl}/${newObject.id}`, newObject, config)
-  return response.data  
+  return response.data
 }
 
 const deleteOne = async id => {

@@ -3,16 +3,16 @@ const LoginForm = ({ handleLogin, username, setUsername, password, setPassword }
     <h1>Log in to blog list</h1>
     <div>
       username
-        <input
-          type='text'
-          value={username}
-          name='Username'
-          onChange={({ target }) => setUsername(target.value)}
-        />
+      <input
+        type='text'
+        value={username}
+        name='Username'
+        onChange={({ target }) => setUsername(target.value)}
+      />
     </div>
     <div>
       password
-        <input
+      <input
         type='password'
         value={password}
         name='Password'

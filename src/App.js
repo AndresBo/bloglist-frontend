@@ -20,13 +20,13 @@ const App = () => {
   // GET ALL BLOGS AT START - SORTED BY NUMBER OF LIKES
   useEffect(() => {
     blogService.getAll().then(blogs => {
-      const sorted = blogs.sort((blogA, blogB)=> blogB.likes - blogA.likes)
+      const sorted = blogs.sort((blogA, blogB) => blogB.likes - blogA.likes)
       setBlogs(sorted)
-    })  
+    })
   }, [])
 
 
-  
+
   // CHECK FOR LOGGED USER AT START
   useEffect(() => {
     const loggedUserJSON = window.localStorage.getItem('loggedBloglistUser')
@@ -79,18 +79,18 @@ const App = () => {
     }
 
     try {
-    blogService
-      .create(blogObject)
-      .then(returnedObject => {
-        setBlogs(blogs.concat(returnedObject))
-        setTitle('')
-        setAuthor('')
-        setUrl('')
-        setMessage(`blog ${blogObject.title} has been added`)
-        setTimeout(() => {
-          setMessage(null)
-        }, 5000)
-      })
+      blogService
+        .create(blogObject)
+        .then(returnedObject => {
+          setBlogs(blogs.concat(returnedObject))
+          setTitle('')
+          setAuthor('')
+          setUrl('')
+          setMessage(`blog ${blogObject.title} has been added`)
+          setTimeout(() => {
+            setMessage(null)
+          }, 5000)
+        })
     } catch(exception) {
       setMessage(`${exception}`)
       setTimeout(() => {
@@ -103,11 +103,11 @@ const App = () => {
   const likeBlog = (blog) => {
     // make deep copy of blog object with JSON.parse + JSON.stringify
     const blogObject = JSON.parse(JSON.stringify(blog))
-    
-    // change the whole 'user' object for just the id of the user  
+
+    // change the whole 'user' object for just the id of the user
     blogObject.user = blog.user.id
     blogObject.likes+=1
-    
+
     try {
       blogService
         .like(blogObject)
@@ -138,7 +138,7 @@ const App = () => {
             })
         }
       } else {
-        setMessage(`only user who created bloglist can delete it`)
+        setMessage('only user who created bloglist can delete it')
         setTimeout(() => {
           setMessage(null)
         }, 5000)
@@ -151,7 +151,7 @@ const App = () => {
     }
   }
 
-  // RENDER 
+  // RENDER
   if (user === null) {
     return (
       <div>
@@ -164,7 +164,7 @@ const App = () => {
         />
         <Notification message={message} />
       </div>
-  )} else {
+    )} else {
     return (
       <div>
         <h2>blogs</h2>
@@ -179,11 +179,11 @@ const App = () => {
             setAuthor={setAuthor}
             url={url}
             setUrl={setUrl}
-          /> 
-        </Toggable> 
+          />
+        </Toggable>
         <button type='submit' onClick={handleLogout}>logout</button>
         {blogs.map(blog =>
-          <Blog 
+          <Blog
             key={blog.id}
             blog={blog}
             handleLike={likeBlog}

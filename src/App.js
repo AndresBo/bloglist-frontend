@@ -132,7 +132,7 @@ const App = () => {
         if (window.confirm('Delete?')){
           blogService
             .deleteOne(id)
-            .then(response => {
+            .then( () => {
               const updatedBlogs = blogs.filter(blog => blog.id !== id)
               setBlogs(updatedBlogs)
             })

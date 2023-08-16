@@ -42,5 +42,4 @@ const deleteOne = async id => {
   return response
 }
 
-// eslint-disable-next-line import/no-anonymous-default-export
 export default { setToken, getAll, create, like, getOne, deleteOne }

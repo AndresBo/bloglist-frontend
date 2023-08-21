@@ -1,10 +1,11 @@
 import React from 'react'
 import '@testing-library/jest-dom'
 import { render, screen } from '@testing-library/react'
+import userEvent from '@testing-library/user-event'
 import Blog from '../components/Blog'
 
 
-test('renders blog title, but not the author, url, likes and user by default', () => {
+test('by default renders blog component with title, not the author, url or likes', () => {
   const blog = {
     title: 'title should render',
     author: 'author should not render',
@@ -23,4 +24,30 @@ test('renders blog title, but not the author, url, likes and user by default', (
   expect(author).toBeNull()
   expect(url).toBeNull()
   expect(likes).toBeNull()
+})
+
+test('then show button in blog component is clicked, title, author, url and likes are displayed', async () => {
+  const blog = {
+    title: 'title should render',
+    author: 'author should render',
+    url: 'url should render',
+    likes: 1,
+    user: {
+      username: 'mario',
+      name: 'mario mario',
+    }
+  }
+
+  const mockHandler = jest.fn()
+
+  render( <Blog blog={blog} />  )
+
+  const user = userEvent.setup()
+  const showButton = screen.getByText('show')
+  await user.click(showButton)
+  screen.debug()
+  const title = screen.getByText('title should render')
+  const author = screen.getByText('author should render')
+  const likes = screen.getByText('likes 1')
+  const name = screen.getByText('mario mario')
 })

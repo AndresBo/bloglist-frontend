@@ -26,7 +26,7 @@ test('by default renders blog component with title, not the author, url or likes
   expect(likes).toBeNull()
 })
 
-test('then show button in blog component is clicked, title, author, url and likes are displayed', async () => {
+test('when "show" button in blog component is clicked, title, author, url and likes are displayed', async () => {
   const blog = {
     title: 'title should render',
     author: 'author should render',
@@ -38,16 +38,21 @@ test('then show button in blog component is clicked, title, author, url and like
     }
   }
 
-  const mockHandler = jest.fn()
-
   render( <Blog blog={blog} />  )
 
   const user = userEvent.setup()
   const showButton = screen.getByText('show')
   await user.click(showButton)
-  screen.debug()
+
   const title = screen.getByText('title should render')
   const author = screen.getByText('author should render')
   const likes = screen.getByText('likes 1')
   const name = screen.getByText('mario mario')
+  const url = screen.getByRole('link')
+
+  expect(title).toBeDefined()
+  expect(url).toHaveAttribute('href', 'url should render')
+  expect(author).toBeDefined()
+  expect(likes).toBeDefined()
+  expect(name).toBeDefined()
 })

@@ -1,6 +1,6 @@
 const  CreateForm = (
   { addBlog, title, setTitle, author, setAuthor, url, setUrl }) => (
-  <form onSubmit={addBlog}>
+  <form onSubmit={addBlog} className="form" name="create-form">
     Create new
     <div>
       title:

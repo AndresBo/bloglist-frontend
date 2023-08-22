@@ -16,7 +16,7 @@ const  CreateForm = (
       <input
         type='text'
         value={author}
-        name='Title'
+        name='Author'
         onChange={({ target }) => setAuthor(target.value)}
       />
     </div>
@@ -25,7 +25,7 @@ const  CreateForm = (
       <input
         type='text'
         value={url}
-        name='Title'
+        name='URL'
         onChange={({ target }) => setUrl(target.value)}
       />
     </div>

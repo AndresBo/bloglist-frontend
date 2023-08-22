@@ -56,3 +56,29 @@ test('when "show" button in blog component is clicked, title, author, url and li
   expect(likes).toBeDefined()
   expect(name).toBeDefined()
 })
+
+test('when like button is clicked twice, the event handler is called twice', async () => {
+  const blog = {
+    title: 'title should render',
+    author: 'author should render',
+    url: 'url should render',
+    likes: 1,
+    user: {
+      username: 'mario',
+      name: 'mario mario',
+    }
+  }
+  // mock function defined with jest
+  const mockHandler = jest.fn()
+
+  render( <Blog blog={blog} handleLike={mockHandler} />  )
+  // user session is started to interact with rendered component
+  const user = userEvent.setup()
+  const showButton = screen.getByText('show')
+  await user.click(showButton)
+
+  const likeButton = screen.getByText('like')
+  await user.click(likeButton)
+  await user.click(likeButton)
+  expect(mockHandler.mock.calls).toHaveLength(2)
+})
